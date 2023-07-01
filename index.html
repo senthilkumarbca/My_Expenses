@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Expense App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    input, button {
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Expense App</h1>
+  <div>
+    <label for="date">Date:</label>
+    <input type="date" id="date">
+    <label for="text">Text:</label>
+    <input type="text" id="text">
+    <label for="amount">Amount:</label>
+    <input type="number" id="amount">
+    <button id="addExpense">Add Expense</button>
+  </div>
+  <h2>Expenses</h2>
+  <div>
+    <label for="dateFilter">Filter by Date:</label>
+    <input type="date" id="dateFilter">
+  </div>
+  <ul id="expenseList"></ul>
+
+  <script src="index.js"></script>
+</body>
+</html>
