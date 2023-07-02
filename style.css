@@ -1,6 +1,22 @@
-body {
-    font-family: Arial, sans-serif;
-  }
-  input, button {
-    margin: 5px;
-  }
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+body{
+  background: #efefef;
+}
+#expenseList{
+  /* background-color: rgb(229, 156, 156); */
+  padding: 10px;
+}
+.expenses{
+  background: #fff;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+}
+.expenseItem{
+  
+}
