@@ -1,4 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+    const formattedDate = `${year}-${month}-${day}`;
+
+    document.getElementById("date").value = formattedDate;
+
     const dbRequest = indexedDB.open("ExpenseDB", 1);
     let db;
   
@@ -40,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const request = objectStore.add(expense);
   
       request.onsuccess = function (event) {
-        dateInput.value = "";
+        // dateInput.value = "";
         textInput.value = "";
         amountInput.value = "";
         displayExpenses();
@@ -75,13 +84,15 @@ document.addEventListener("DOMContentLoaded", () => {
             }
   
             currentDate = expense.date;
-            currentListItem = document.createElement("li");
+            currentListItem = document.createElement("div");
+            currentListItem.classList.add('expenses')
             currentListItem.textContent = currentDate;
             totalAmount = 0;
           }
   
           const expenseText = `${expense.text} - ${expense.amount.toFixed(2)}`;
           const expenseItem = document.createElement("div");
+          expenseItem.classList.add('expenseItem')
           expenseItem.textContent = expenseText;
           currentListItem.appendChild(expenseItem);
   
@@ -117,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const expense = cursor.value;
   
           if (!currentListItem) {
-            currentListItem = document.createElement("li");
+            currentListItem = document.createElement("div");
             currentListItem.textContent = `Expenses for ${dateFilter}`;
             expenseList.appendChild(currentListItem);
           }
