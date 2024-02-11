@@ -29,6 +29,14 @@ document.addEventListener("DOMContentLoaded", () => {
   
       const dateFilter = document.getElementById("dateFilter");
       dateFilter.addEventListener("change", filterExpenses);
+
+      const textInput = document.getElementById("amount");
+      textInput.addEventListener("keydown", (e)=> {
+          console.log('event=>',e.key);
+          if(e.key == 'Enter'){
+            addExpense();
+          }
+      });
   
       displayExpenses();
     };
@@ -110,43 +118,59 @@ document.addEventListener("DOMContentLoaded", () => {
   
     function filterExpenses() {
       const dateFilter = document.getElementById("dateFilter").value;
-  
+    
       const expenseList = document.getElementById("expenseList");
       expenseList.innerHTML = "";
-  
+    
+      if (!dateFilter) {
+        displayExpenses();
+        return; // Exit early if no date filter is provided
+      }
+    
       const objectStore = db.transaction("expenses").objectStore("expenses");
       const index = objectStore.index("date");
+    
       const request = index.openCursor(IDBKeyRange.only(dateFilter));
-  
+    
       let totalAmount = 0;
       let currentListItem = null;
-  
-      request.onsuccess = function (event) {
+    
+      request.onsuccess = function(event) {
         const cursor = event.target.result;
-  
+    
         if (cursor) {
           const expense = cursor.value;
-  
+    
           if (!currentListItem) {
             currentListItem = document.createElement("div");
             currentListItem.textContent = `Expenses for ${dateFilter}`;
             expenseList.appendChild(currentListItem);
           }
-  
+    
           const expenseText = `${expense.text} - ${expense.amount.toFixed(2)}`;
           const expenseItem = document.createElement("div");
           expenseItem.textContent = expenseText;
           currentListItem.appendChild(expenseItem);
-  
+    
           totalAmount += expense.amount;
-  
+    
           cursor.continue();
         } else {
-          if (currentListItem) {
+          if (!currentListItem) {
+            // If no records found, display "No expenses"
+            const noExpensesMessage = document.createElement("div");
+            noExpensesMessage.textContent = "No expenses for selected date";
+            expenseList.appendChild(noExpensesMessage);
+          } else {
             currentListItem.innerHTML += ` (Total: ${totalAmount.toFixed(2)})`;
           }
         }
       };
+    
+      request.onerror = function(event) {
+        console.log('Error filtering expenses: ', event.target.error);
+      };
     }
+    
   });
   
